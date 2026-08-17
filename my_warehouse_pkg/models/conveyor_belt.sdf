@@ -1,0 +1,160 @@
+<?xml version="1.0" ?>
+<!--
+Model for the ROS Simulation Interfaces Demo
+
+This model can be merge-included into the jetty demo world (jetty.sdf) or the small sim_ifaces_demo.sdf file
+
+Partially generated using Gemini 2.5 Pro
+-->
+<sdf version="1.11">
+    <model name="conveyor_belt">
+        <frame name="tray_start">
+            <pose relative_to="conveyor_0">0 0 0.51  0 0 0</pose>
+        </frame>
+
+        <model name="belt_surface">
+            <pose>0 0 0.5  0 0 0</pose>
+            <link name="base">
+            <collision name="collision">
+                <geometry>
+                <box>
+                    <size>5.0 0.4 0.01</size>
+                </box>
+                </geometry>
+                <surface>
+                <friction>
+                    <ode>
+                    <mu>1.0</mu>
+                    <mu2>1.0</mu2>
+                    </ode>
+                </friction>
+                </surface>
+            </collision>
+            <visual name="visual">
+                <geometry>
+                <box>
+                    <size>5.0 0.4 0.01</size>
+                </box>
+                </geometry>
+                <material>
+                <diffuse>0.4 0.5 0.0</diffuse>
+                <emissive>0.1 0.1 0.1</emissive>
+                </material>
+            </visual>
+            </link>
+            
+            <joint name="belt_to_world" type="fixed">
+                <parent>world</parent>
+                <child>base</child>
+            </joint>
+
+            <plugin filename="gz-sim-track-controller-system" name="gz::sim::systems::TrackController">
+                <link>base</link>
+                <min_velocity>-2.0</min_velocity>
+                <max_velocity>2.0</max_velocity>
+            </plugin>
+        </model>
+
+        <model name="conveyor_stopper">
+          <pose>2.5 0 0.55 0 0 0</pose> <link name="stopper_link">
+            <collision name="collision">
+              <geometry>
+                <box>
+                  <size>0.05 0.5 0.15</size>
+                </box>
+              </geometry>
+              <surface>
+                <friction>
+                  <ode>
+                    <mu>1.0</mu>
+                    <mu2>1.0</mu2>
+                  </ode>
+                </friction>
+              </surface>
+            </collision>
+            <visual name="visual">
+              <geometry>
+                <box>
+                  <size>0.05 0.5 0.15</size>
+                </box>
+              </geometry>
+              <material>
+                <diffuse>0.8 0.1 0.1 1.0</diffuse>
+                <ambient>0.8 0.1 0.1 1.0</ambient>
+              </material>
+            </visual>
+          </link>
+          
+          <joint name="stopper_to_world" type="fixed">
+            <parent>world</parent>
+            <child>stopper_link</child>
+          </joint>
+        </model>
+
+        <include>
+            <name>conveyor_0</name>
+            <uri>https://fuel.gazebosim.org/1.0/Open-RMF/models/conveyor_block</uri>
+            <pose>-2.25 0 0 0 0 1.5707</pose>
+            <static>true</static>
+        </include>
+        <include>
+            <name>conveyor_1</name>
+            <uri>https://fuel.gazebosim.org/1.0/Open-RMF/models/conveyor_block</uri>
+            <pose>-1.75 0 0 0 0 1.5707</pose>
+            <static>true</static>
+        </include>
+        <include>
+            <name>conveyor_2</name>
+            <uri>https://fuel.gazebosim.org/1.0/Open-RMF/models/conveyor_block</uri>
+            <pose>-1.25 0 0 0 0 1.5707</pose>
+            <static>true</static>
+        </include>
+        <include>
+            <name>conveyor_3</name>
+            <uri>https://fuel.gazebosim.org/1.0/Open-RMF/models/conveyor_block</uri>
+            <pose>-0.75 0 0 0 0 1.5707</pose>
+            <static>true</static>
+        </include>
+        <include>
+            <name>conveyor_4</name>
+            <uri>https://fuel.gazebosim.org/1.0/Open-RMF/models/conveyor_block</uri>
+            <pose>-0.25 0 0 0 0 1.5707</pose>
+            <static>true</static>
+        </include>
+        <include>
+            <name>conveyor_5</name>
+            <uri>https://fuel.gazebosim.org/1.0/Open-RMF/models/conveyor_block</uri>
+            <pose>0.25 0 0 0 0 1.5707</pose>
+            <static>true</static>
+        </include>
+        <include>
+            <name>conveyor_6</name>
+            <uri>https://fuel.gazebosim.org/1.0/Open-RMF/models/conveyor_block</uri>
+            <pose>0.75 0 0 0 0 1.5707</pose>
+            <static>true</static>
+        </include>
+        <include>
+            <name>conveyor_7</name>
+            <uri>https://fuel.gazebosim.org/1.0/Open-RMF/models/conveyor_block</uri>
+            <pose>1.25 0 0 0 0 1.5707</pose>
+            <static>true</static>
+        </include>
+        <include>
+            <name>conveyor_8</name>
+            <uri>https://fuel.gazebosim.org/1.0/Open-RMF/models/conveyor_block</uri>
+            <pose>1.75 0 0 0 0 1.5707</pose>
+            <static>true</static>
+        </include>
+        <include>
+            <name>conveyor_9</name>
+            <uri>https://fuel.gazebosim.org/1.0/Open-RMF/models/conveyor_block</uri>
+            <pose>2.25 0 0 0 0 1.5707</pose>
+            <static>true</static>
+        </include>
+
+        <include>
+            <pose relative_to="tray_start">0 0 0 0 0 0</pose> 
+            <uri>https://fuel.gazebosim.org/1.0/Open-RMF/models/tray</uri>
+        </include>
+    </model>
+</sdf>

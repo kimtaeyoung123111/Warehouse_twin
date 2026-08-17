@@ -1,0 +1,511 @@
+<?xml version="1.0" ?>
+<sdf version="1.8">
+  <world name="default">
+
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
+
+    <physics name="fast" type="ignored">
+      <max_step_size>0.01</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+
+    <scene>
+      <ambient>0.4 0.4 0.4 1</ambient>
+      <background>0.7 0.7 0.7 1</background>
+      <grid>false</grid>
+    </scene>
+
+    <light type="directional" name="sun">
+      <cast_shadows>false</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+
+    <!--
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0.8 0.8 0.8 1</ambient>
+            <diffuse>0.8 0.8 0.8 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+    -->
+
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+        </collision>
+        </link>
+    </model>
+
+    <!-- Outer factory shell kept intact; all internal props (shelves, forklifts, drums, spools, dumpsters, pallets, hand carts, ladders, packing stations, generators, demo vehicles, drills, gravel ramp, wall bracket) removed -->
+    <include>
+      <static>true</static>
+      <name>Distribution Warehouse</name>
+      <!--<uri>model://Distribution_Warehouse</uri>-->
+      <uri>file:///home/taeyoung/my_warehouse/models/Distribution_Warehouse</uri>
+      <!--<uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Distribution%20Warehouse</uri>-->
+    </include>
+
+    <model name="amr_grid_track">
+      <static>true</static>
+      <pose>0 0 0.01 0 0 0</pose>
+
+      <link name="line_x_-20">
+        <pose>0 -20 0 0 0 0</pose>
+        <visual name="vis_x_-20">
+          <geometry><box><size>40 0.1 0.001</size></box></geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material>
+        </visual>
+      </link>
+
+      <link name="line_x_-18">
+        <pose>0 -18 0 0 0 0</pose>
+        <visual name="vis_x_-18">
+          <geometry><box><size>40 0.1 0.001</size></box></geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material>
+        </visual>
+      </link>
+
+      <link name="line_x_-16">
+        <pose>0 -16 0 0 0 0</pose>
+        <visual name="vis_x_-16">
+          <geometry><box><size>40 0.1 0.001</size></box></geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material>
+        </visual>
+      </link>
+
+      <link name="line_x_-14">
+        <pose>0 -14 0 0 0 0</pose>
+        <visual name="vis_x_-14">
+          <geometry><box><size>40 0.1 0.001</size></box></geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material>
+        </visual>
+      </link>
+
+      <link name="line_x_-12">
+        <pose>0 -12 0 0 0 0</pose>
+        <visual name="vis_x_-12">
+          <geometry><box><size>40 0.1 0.001</size></box></geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material>
+        </visual>
+      </link>
+
+      <link name="line_x_-10">
+        <pose>0 -10 0 0 0 0</pose>
+        <visual name="vis_x_-10">
+          <geometry><box><size>40 0.1 0.001</size></box></geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material>
+        </visual>
+      </link>
+
+      <link name="line_x_-8">
+        <pose>0 -8 0 0 0 0</pose>
+        <visual name="vis_x_-8">
+          <geometry><box><size>40 0.1 0.001</size></box></geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material>
+        </visual>
+      </link>
+
+      <link name="line_x_-6">
+        <pose>0 -6 0 0 0 0</pose>
+        <visual name="vis_x_-6">
+          <geometry><box><size>40 0.1 0.001</size></box></geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material>
+        </visual>
+      </link>
+
+      <link name="line_x_-4">
+        <pose>0 -4 0 0 0 0</pose>
+        <visual name="vis_x_-4">
+          <geometry><box><size>40 0.1 0.001</size></box></geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material>
+        </visual>
+      </link>
+
+      <link name="line_x_-2">
+        <pose>0 -2 0 0 0 0</pose>
+        <visual name="vis_x_-2">
+          <geometry><box><size>40 0.1 0.001</size></box></geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material>
+        </visual>
+      </link>
+
+      <link name="line_x_0">
+        <pose>0 0 0 0 0 0</pose>
+        <visual name="vis_x_0">
+          <geometry><box><size>40 0.1 0.001</size></box></geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material>
+        </visual>
+      </link>
+
+      <link name="line_x_2">
+        <pose>0 2 0 0 0 0</pose>
+        <visual name="vis_x_2">
+          <geometry><box><size>40 0.1 0.001</size></box></geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material>
+        </visual>
+      </link>
+
+      <link name="line_x_4">
+        <pose>0 4 0 0 0 0</pose>
+        <visual name="vis_x_4">
+          <geometry><box><size>40 0.1 0.001</size></box></geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material>
+        </visual>
+      </link>
+
+      <link name="line_x_6">
+        <pose>0 6 0 0 0 0</pose>
+        <visual name="vis_x_6">
+          <geometry><box><size>40 0.1 0.001</size></box></geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material>
+        </visual>
+      </link>
+
+      <link name="line_x_8">
+        <pose>0 8 0 0 0 0</pose>
+        <visual name="vis_x_8">
+          <geometry><box><size>40 0.1 0.001</size></box></geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material>
+        </visual>
+      </link>
+
+      <link name="line_x_10">
+        <pose>0 10 0 0 0 0</pose>
+        <visual name="vis_x_10">
+          <geometry><box><size>40 0.1 0.001</size></box></geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material>
+        </visual>
+      </link>
+
+      <link name="line_x_12">
+        <pose>0 12 0 0 0 0</pose>
+        <visual name="vis_x_12">
+          <geometry><box><size>40 0.1 0.001</size></box></geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material>
+        </visual>
+      </link>
+
+      <link name="line_x_14">
+        <pose>0 14 0 0 0 0</pose>
+        <visual name="vis_x_14">
+          <geometry><box><size>40 0.1 0.001</size></box></geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material>
+        </visual>
+      </link>
+
+      <link name="line_x_16">
+        <pose>0 16 0 0 0 0</pose>
+        <visual name="vis_x_16">
+          <geometry><box><size>40 0.1 0.001</size></box></geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material>
+        </visual>
+      </link>
+
+      <link name="line_x_18">
+        <pose>0 18 0 0 0 0</pose>
+        <visual name="vis_x_18">
+          <geometry><box><size>40 0.1 0.001</size></box></geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material>
+        </visual>
+      </link>
+
+      <link name="line_x_20">
+        <pose>0 20 0 0 0 0</pose>
+        <visual name="vis_x_20">
+          <geometry><box><size>40 0.1 0.001</size></box></geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material>
+        </visual>
+      </link>
+
+      <link name="line_y_-20">
+        <pose>-20 0 0 0 0 0</pose>
+        <visual name="vis_y_-20">
+          <geometry><box><size>0.1 40 0.001</size></box></geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material>
+        </visual>
+      </link>
+
+      <link name="line_y_-18">
+        <pose>-18 0 0 0 0 0</pose>
+        <visual name="vis_y_-18">
+          <geometry><box><size>0.1 40 0.001</size></box></geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material>
+        </visual>
+      </link>
+
+      <link name="line_y_-16">
+        <pose>-16 0 0 0 0 0</pose>
+        <visual name="vis_y_-16">
+          <geometry><box><size>0.1 40 0.001</size></box></geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material>
+        </visual>
+      </link>
+
+      <link name="line_y_-14">
+        <pose>-14 0 0 0 0 0</pose>
+        <visual name="vis_y_-14">
+          <geometry><box><size>0.1 40 0.001</size></box></geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material>
+        </visual>
+      </link>
+
+      <link name="line_y_-12">
+        <pose>-12 0 0 0 0 0</pose>
+        <visual name="vis_y_-12">
+          <geometry><box><size>0.1 40 0.001</size></box></geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material>
+        </visual>
+      </link>
+
+      <link name="line_y_-10">
+        <pose>-10 0 0 0 0 0</pose>
+        <visual name="vis_y_-10">
+          <geometry><box><size>0.1 40 0.001</size></box></geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material>
+        </visual>
+      </link>
+
+      <link name="line_y_-8">
+        <pose>-8 0 0 0 0 0</pose>
+        <visual name="vis_y_-8">
+          <geometry><box><size>0.1 40 0.001</size></box></geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material>
+        </visual>
+      </link>
+
+      <link name="line_y_-6">
+        <pose>-6 0 0 0 0 0</pose>
+        <visual name="vis_y_-6">
+          <geometry><box><size>0.1 40 0.001</size></box></geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material>
+        </visual>
+      </link>
+
+      <link name="line_y_-4">
+        <pose>-4 0 0 0 0 0</pose>
+        <visual name="vis_y_-4">
+          <geometry><box><size>0.1 40 0.001</size></box></geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material>
+        </visual>
+      </link>
+
+      <link name="line_y_-2">
+        <pose>-2 0 0 0 0 0</pose>
+        <visual name="vis_y_-2">
+          <geometry><box><size>0.1 40 0.001</size></box></geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material>
+        </visual>
+      </link>
+
+      <link name="line_y_0">
+        <pose>0 0 0 0 0 0</pose>
+        <visual name="vis_y_0">
+          <geometry><box><size>0.1 40 0.001</size></box></geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material>
+        </visual>
+      </link>
+
+      <link name="line_y_2">
+        <pose>2 0 0 0 0 0</pose>
+        <visual name="vis_y_2">
+          <geometry><box><size>0.1 40 0.001</size></box></geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material>
+        </visual>
+      </link>
+
+      <link name="line_y_4">
+        <pose>4 0 0 0 0 0</pose>
+        <visual name="vis_y_4">
+          <geometry><box><size>0.1 40 0.001</size></box></geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material>
+        </visual>
+      </link>
+
+      <link name="line_y_6">
+        <pose>6 0 0 0 0 0</pose>
+        <visual name="vis_y_6">
+          <geometry><box><size>0.1 40 0.001</size></box></geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material>
+        </visual>
+      </link>
+
+      <link name="line_y_8">
+        <pose>8 0 0 0 0 0</pose>
+        <visual name="vis_y_8">
+          <geometry><box><size>0.1 40 0.001</size></box></geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material>
+        </visual>
+      </link>
+
+      <link name="line_y_10">
+        <pose>10 0 0 0 0 0</pose>
+        <visual name="vis_y_10">
+          <geometry><box><size>0.1 40 0.001</size></box></geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material>
+        </visual>
+      </link>
+
+      <link name="line_y_12">
+        <pose>12 0 0 0 0 0</pose>
+        <visual name="vis_y_12">
+          <geometry><box><size>0.1 40 0.001</size></box></geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material>
+        </visual>
+      </link>
+
+      <link name="line_y_14">
+        <pose>14 0 0 0 0 0</pose>
+        <visual name="vis_y_14">
+          <geometry><box><size>0.1 40 0.001</size></box></geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material>
+        </visual>
+      </link>
+
+      <link name="line_y_16">
+        <pose>16 0 0 0 0 0</pose>
+        <visual name="vis_y_16">
+          <geometry><box><size>0.1 40 0.001</size></box></geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material>
+        </visual>
+      </link>
+
+      <link name="line_y_18">
+        <pose>18 0 0 0 0 0</pose>
+        <visual name="vis_y_18">
+          <geometry><box><size>0.1 40 0.001</size></box></geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material>
+        </visual>
+      </link>
+
+      <link name="line_y_20">
+        <pose>20 0 0 0 0 0</pose>
+        <visual name="vis_y_20">
+          <geometry><box><size>0.1 40 0.001</size></box></geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- 테스트 박스 -->
+    <include>
+      <name>test_box_on_amr</name>
+      <pose>-2.0 0.0 2.48 0 0 0</pose>
+      <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Cardboard box</uri>
+    </include>
+
+<!--
+<include>
+      <name>loading_pallet</name>
+      <pose>0.0 -20.0 0.01 0 0 0</pose> 
+      <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Euro pallet</uri>
+    </include>
+
+    <include>
+      <name>real_cardboard_box_0</name>
+      <pose>-0.200 -20.250 0.500 0 0 1.5708</pose>
+      <uri>model://Cardboard_box</uri>
+    </include>
+
+    <include>
+      <name>real_cardboard_box_1</name>
+      <pose>0.200 -20.250 0.500 0 0 1.5708</pose>
+      <uri>model://Cardboard_box</uri>
+    </include>
+
+    <include>
+      <name>real_cardboard_box_2</name>
+      <pose>-0.200 -19.750 0.500 0 0 1.5708</pose>
+      <uri>model://Cardboard_box</uri>
+    </include>
+
+    <include>
+      <name>real_cardboard_box_3</name>
+      <pose>0.200 -19.750 0.500 0 0 1.5708</pose>
+      <uri>model://Cardboard_box</uri>
+    </include>
+
+    <include>
+      <name>real_cardboard_box_4</name>
+      <pose>-0.200 -20.250 0.900 0 0 1.5708</pose>
+      <uri>model://Cardboard_box</uri>
+    </include>
+
+    <include>
+      <name>real_cardboard_box_5</name>
+      <pose>0.200 -20.250 0.900 0 0 1.5708</pose>
+      <uri>model://Cardboard_box</uri>
+    </include>
+
+    <include>
+      <name>real_cardboard_box_6</name>
+      <pose>-0.200 -19.750 0.900 0 0 1.5708</pose>
+      <uri>model://Cardboard_box</uri>
+    </include>
+
+    <include>
+      <name>real_cardboard_box_7</name>
+      <pose>0.200 -19.750 0.900 0 0 1.5708</pose>
+      <uri>model://Cardboard_box</uri>
+    </include>
+
+    <include>
+      <name>real_cardboard_box_8</name>
+      <pose>-0.200 -20.250 1.300 0 0 1.5708</pose>
+      <uri>model://Cardboard_box</uri>
+    </include>
+
+    <include>
+      <name>real_cardboard_box_9</name>
+      <pose>0.200 -20.250 1.300 0 0 1.5708</pose>
+      <uri>model://Cardboard_box</uri>
+    </include>
+
+    <include>
+      <name>real_cardboard_box_10</name>
+      <pose>-0.200 -19.750 1.300 0 0 1.5708</pose>
+      <uri>model://Cardboard_box</uri>
+    </include>
+
+    <include>
+      <name>real_cardboard_box_11</name>
+      <pose>0.200 -19.750 1.300 0 0 1.5708</pose>
+      <uri>model://Cardboard_box</uri>
+    </include>-->
+    
+  </world>
+</sdf>
