@@ -8,9 +8,12 @@ Partially generated using Gemini 2.5 Pro
 -->
 <sdf version="1.11">
     <model name="conveyor_belt">
+
+        <!--
         <frame name="tray_start">
             <pose relative_to="conveyor_0">0 0 0.51  0 0 0</pose>
         </frame>
+        -->
 
         <model name="belt_surface">
             <pose>0 0 0.5  0 0 0</pose>
@@ -18,7 +21,7 @@ Partially generated using Gemini 2.5 Pro
             <collision name="collision">
                 <geometry>
                 <box>
-                    <size>5.0 0.4 0.01</size>
+                    <size>5.0 0.8 0.01</size>
                 </box>
                 </geometry>
                 <surface>
@@ -33,7 +36,7 @@ Partially generated using Gemini 2.5 Pro
             <visual name="visual">
                 <geometry>
                 <box>
-                    <size>5.0 0.4 0.01</size>
+                    <size>5.0 0.8 0.01</size>
                 </box>
                 </geometry>
                 <material>
@@ -60,7 +63,7 @@ Partially generated using Gemini 2.5 Pro
             <collision name="collision">
               <geometry>
                 <box>
-                  <size>0.05 0.5 0.15</size>
+                  <size>0.05 1.0 0.15</size>
                 </box>
               </geometry>
               <surface>
@@ -75,7 +78,7 @@ Partially generated using Gemini 2.5 Pro
             <visual name="visual">
               <geometry>
                 <box>
-                  <size>0.05 0.5 0.15</size>
+                  <size>0.05 1.0 0.15</size>
                 </box>
               </geometry>
               <material>
@@ -152,9 +155,12 @@ Partially generated using Gemini 2.5 Pro
             <static>true</static>
         </include>
 
+        <!--
         <include>
             <pose relative_to="tray_start">0 0 0 0 0 0</pose> 
             <uri>https://fuel.gazebosim.org/1.0/Open-RMF/models/tray</uri>
         </include>
+        -->
+
     </model>
 </sdf>

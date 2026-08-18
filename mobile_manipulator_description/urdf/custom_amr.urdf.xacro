@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro" name="mobile_manipulator">
+
+  <xacro:include filename="$(find mir_description)/urdf/mir.urdf.xacro" />
+
+  <link name="safety_collision_volume">
+    <collision>
+      <origin xyz="0.0 0.0 -0.15" rpy="0.0 0.0 0.0" />
+      <geometry>
+        <box size="0.99 0.68 0.30" />
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="safety_collision_joint" type="fixed">
+    <parent link="surface" />
+    <child link="safety_collision_volume" />
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+  </joint>
+
+  <link name="fence_front">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.02 0.6 0.1"/> </geometry>
+      <material name="dark_grey"><color rgba="0.3 0.3 0.3 1.0"/></material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.02 0.6 0.1"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="fence_front_joint" type="fixed">
+    <parent link="surface" />
+    <child link="fence_front" />
+    <origin xyz="0.45 0.0 0.05" rpy="0 0 0" /> </joint>
+
+  <link name="fence_back">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.02 0.6 0.1"/>
+      </geometry>
+      <material name="dark_grey"><color rgba="0.3 0.3 0.3 1.0"/></material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.02 0.6 0.1"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="fence_back_joint" type="fixed">
+    <parent link="surface" />
+    <child link="fence_back" />
+    <origin xyz="-0.45 0.0 0.05" rpy="0 0 0" /> </joint>
+
+  <link name="fence_left">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.92 0.02 0.1"/> </geometry>
+      <material name="dark_grey"><color rgba="0.3 0.3 0.3 1.0"/></material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.92 0.02 0.1"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="fence_left_joint" type="fixed">
+    <parent link="surface" />
+    <child link="fence_left" />
+    <origin xyz="0.0 0.31 0.05" rpy="0 0 0" /> </joint>
+
+  <link name="fence_right">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.92 0.02 0.1"/>
+      </geometry>
+      <material name="dark_grey"><color rgba="0.3 0.3 0.3 1.0"/></material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.92 0.02 0.1"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="fence_right_joint" type="fixed">
+    <parent link="surface" />
+    <child link="fence_right" />
+    <origin xyz="0.0 -0.31 0.05" rpy="0 0 0" /> </joint>
+
+</robot>

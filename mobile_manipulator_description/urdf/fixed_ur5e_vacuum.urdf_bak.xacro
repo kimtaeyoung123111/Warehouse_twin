@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro" name="fixed_arm_robot">
+
+  <xacro:include filename="$(find ur_description)/urdf/ur_macro.xacro" />
+  
+  <link name="world" />
+
+  <xacro:ur_robot
+    name="ur5e"
+    tf_prefix="fixed_arm_"
+    parent="world"
+    joint_limits_parameters_file="$(find mobile_manipulator_description)/config/ur5e_joint_limits.yaml"
+    kinematics_parameters_file="$(find ur_description)/config/ur5e/default_kinematics.yaml"
+    physical_parameters_file="$(find ur_description)/config/ur5e/physical_parameters.yaml"
+    visual_parameters_file="$(find ur_description)/config/ur5e/visual_parameters.yaml"
+  >
+    <origin xyz="0 0 0.8" rpy="0 0 0" /> </xacro:ur_robot>
+
+  <link name="foam_gripper_base">
+    <visual>
+      <geometry><box size="0.10 0.10 0.05"/></geometry>
+      <material name="black"><color rgba="0.15 0.15 0.15 1.0"/></material>
+    </visual>
+    <collision>
+      <geometry><box size="0.10 0.10 0.05"/></geometry>
+    </collision>
+  </link>
+
+  <joint name="tool0_to_gripper_base" type="fixed">
+    <parent link="fixed_arm_tool0"/>
+    <child link="foam_gripper_base"/>
+    <origin xyz="0.0 0.0 0.025" rpy="0.0 0.0 0.0"/>
+  </joint>
+
+  <link name="vacuum_gripper_pad">
+    <visual>
+      <geometry><box size="0.16 0.16 0.03"/></geometry>
+      <material name="blue_pad"><color rgba="0.1 0.4 0.8 1.0"/></material>
+    </visual>
+    <collision>
+      <geometry><box size="0.16 0.16 0.03"/></geometry>
+    </collision>
+  </link>
+
+  <joint name="base_to_pad" type="fixed">
+    <parent link="foam_gripper_base"/>
+    <child link="vacuum_gripper_pad"/>
+    <origin xyz="0.0 0.0 0.04" rpy="0.0 0.0 0.0"/>
+  </joint>
+
+  <gazebo>
+    <plugin filename="gz-sim-vacuum-gripper-system" name="gz::sim::systems::VacuumGripper">
+      <link_name>vacuum_gripper_pad</link_name>
+      <topic>/vacuum_gripper/command</topic>
+    </plugin>
+  </gazebo>
+
+</robot>

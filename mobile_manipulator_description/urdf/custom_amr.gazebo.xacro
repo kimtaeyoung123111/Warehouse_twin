@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro" name="mobile_manipulator">
+
+  <xacro:include filename="$(find mobile_manipulator_description)/urdf/custom_amr.urdf.xacro" />
+
+  <gazebo>
+    <plugin filename="gz-sim-joint-state-publisher-system"
+            name="gz::sim::systems::JointStatePublisher">
+      <topic>/joint_states</topic>
+      <joint_name>left_wheel_joint</joint_name>
+      <joint_name>right_wheel_joint</joint_name>
+      <joint_name>fl_caster_rotation_joint</joint_name>
+      <joint_name>fr_caster_rotation_joint</joint_name>
+      <joint_name>bl_caster_rotation_joint</joint_name>
+      <joint_name>br_caster_rotation_joint</joint_name>
+    </plugin>
+  </gazebo>
+
+  <gazebo>
+    <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
+      <left_joint>left_wheel_joint</left_joint>
+      <right_joint>right_wheel_joint</right_joint>
+      <wheel_separation>0.445208</wheel_separation>
+      <wheel_radius>0.0625</wheel_radius>
+      <odom_publish_frequency>50</odom_publish_frequency>
+      <topic>/cmd_vel_gz</topic>
+      <odom_topic>/odom_gz</odom_topic>
+      <tf_topic>/tf_gz</tf_topic>
+      <frame_id>odom</frame_id>
+      <child_frame_id>base_footprint</child_frame_id>
+    </plugin>
+  </gazebo>
+
+  </robot>

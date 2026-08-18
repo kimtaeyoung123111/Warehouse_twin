@@ -1,0 +1,31 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 1000  # 제어 주기 (1000Hz)
+
+    # 1. 로봇 관절 상태(각도)를 읽어서 ROS 2 토픽으로 발행해주는 센서 노드
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    # 2. 로봇 팔의 6개 관절 각도를 조절하고 위치를 유지시켜주는 모터 제어기
+    joint_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+joint_trajectory_controller:
+  ros__parameters:
+    # 제어할 UR5e 관절 6개의 정확한 이름 (tf_prefix인 'fixed_arm_' 포함)
+    joints:
+      - fixed_arm_shoulder_pan_joint
+      - fixed_arm_shoulder_lift_joint
+      - fixed_arm_elbow_joint
+      - fixed_arm_wrist_1_joint
+      - fixed_arm_wrist_2_joint
+      - fixed_arm_wrist_3_joint
+
+    # 관절 제어 방식 (위치 제어)
+    command_interfaces:
+      - position
+
+    # 관절 상태 피드백 (위치, 속도)
+    state_interfaces:
+      - position
+      - velocity

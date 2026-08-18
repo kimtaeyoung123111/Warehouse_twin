@@ -1,0 +1,168 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro" name="fixed_arm_robot">
+
+  <xacro:include filename="$(find ur_description)/urdf/ur_macro.xacro" />
+  
+  <link name="world" />
+
+  <link name="robot_pedestal">
+    <visual>
+      <origin xyz="0 0 0.4" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.30 0.30 0.80"/>
+      </geometry>
+      <material name="dark_grey">
+        <color rgba="0.2 0.2 0.2 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.4" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.30 0.30 0.80"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="50.0"/>
+      <origin xyz="0 0 0.4" rpy="0 0 0"/>
+      <inertia ixx="1.0" ixy="0" ixz="0" iyy="1.0" iyz="0" izz="1.0"/>
+    </inertial>
+  </link>
+
+  <joint name="world_to_pedestal" type="fixed">
+    <parent link="world"/>
+    <child link="robot_pedestal"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <xacro:ur_robot
+    name="ur5e"
+    tf_prefix="fixed_arm_"
+    parent="robot_pedestal"
+    joint_limits_parameters_file="$(find my_warehouse_pkg)/config/ur5e_joint_limits.yaml"
+    kinematics_parameters_file="$(find ur_description)/config/ur5e/default_kinematics.yaml"
+    physical_parameters_file="$(find ur_description)/config/ur5e/physical_parameters.yaml"
+    visual_parameters_file="$(find ur_description)/config/ur5e/visual_parameters.yaml"
+  >
+    <origin xyz="0 0 0.8" rpy="0 0 0" /> 
+  </xacro:ur_robot>
+
+  <link name="foam_gripper_base">
+    <visual>
+      <geometry><box size="0.10 0.10 0.05"/></geometry>
+      <material name="black"><color rgba="0.15 0.15 0.15 1.0"/></material>
+    </visual>
+    <collision>
+      <geometry><box size="0.10 0.10 0.05"/></geometry>
+    </collision>
+  </link>
+
+  <joint name="tool0_to_gripper_base" type="fixed">
+    <parent link="fixed_arm_tool0"/>
+    <child link="foam_gripper_base"/>
+    <origin xyz="0.0 0.0 0.025" rpy="0.0 0.0 0.0"/>
+  </joint>
+
+  <link name="vacuum_gripper_pad">
+    <visual>
+      <geometry><box size="0.16 0.16 0.03"/></geometry>
+      <material name="blue_pad"><color rgba="0.1 0.4 0.8 1.0"/></material>
+    </visual>
+    <collision>
+      <geometry><box size="0.16 0.16 0.03"/></geometry>
+    </collision>
+  </link>
+
+  <joint name="gripper_base_to_pad" type="fixed">
+    <parent link="foam_gripper_base"/>
+    <child link="vacuum_gripper_pad"/>
+    <origin xyz="0.0 0.0 0.04" rpy="0.0 0.0 0.0"/>
+  </joint>
+
+  <ros2_control name="GazeboSimSystem" type="system">
+    <hardware>
+      <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+    </hardware>
+    
+    <joint name="fixed_arm_shoulder_pan_joint">
+      <command_interface name="position"/>
+      <state_interface name="position"><param name="initial_value">0.0</param></state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+    
+    <joint name="fixed_arm_shoulder_lift_joint">
+      <command_interface name="position"/>
+      <state_interface name="position"><param name="initial_value">-1.57</param></state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+    
+    <joint name="fixed_arm_elbow_joint">
+      <command_interface name="position"/>
+      <state_interface name="position"><param name="initial_value">1.57</param></state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+    
+    <joint name="fixed_arm_wrist_1_joint">
+      <command_interface name="position"/>
+      <state_interface name="position"><param name="initial_value">-1.57</param></state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+    
+    <joint name="fixed_arm_wrist_2_joint">
+      <command_interface name="position"/>
+      <state_interface name="position"><param name="initial_value">-1.57</param></state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+    
+    <joint name="fixed_arm_wrist_3_joint">
+      <command_interface name="position"/>
+      <state_interface name="position"><param name="initial_value">0.0</param></state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+  </ros2_control>
+
+  <!-- ROS2 컨트롤 플러그인 -->
+  <gazebo>
+    <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+      <parameters>$(find my_warehouse_pkg)/config/ur5e_controllers.yaml</parameters>
+    </plugin>
+  </gazebo>
+
+  <!-- 카메라 -->
+  <link name="wrist_camera_link">
+    <visual>
+      <geometry><box size="0.02 0.05 0.02"/></geometry>
+      <material name="black">
+        <color rgba="0.1 0.1 0.1 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry><box size="0.02 0.05 0.02"/></geometry>
+    </collision>
+  </link>
+
+  <joint name="camera_to_gripper" type="fixed">
+    <parent link="foam_gripper_base"/>
+    <child link="wrist_camera_link"/>
+    <origin xyz="0.11 0.0 0.02" rpy="0 -1.5708 0"/>
+  </joint>
+
+  <gazebo reference="wrist_camera_link">
+    <sensor name="wrist_camera" type="camera">
+      <always_on>true</always_on>
+      <update_rate>30.0</update_rate>
+      <visualize>true</visualize>
+      <topic>/camera/image_raw</topic>
+      <camera>
+        <horizontal_fov>1.047</horizontal_fov> <image>
+          <width>640</width>
+          <height>480</height>
+        </image>
+        <clip>
+          <near>0.01</near>
+          <far>5.0</far>
+        </clip>
+      </camera>
+    </sensor>
+  </gazebo>
+
+</robot>
