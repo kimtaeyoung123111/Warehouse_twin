@@ -6,8 +6,12 @@
     <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
       <render_engine>ogre2</render_engine>
     </plugin>
+
+    <plugin filename="gz-sim-contact-system" name="gz::sim::systems::Contact"/>
+
     <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
     <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
+
 
     <physics name="fast" type="ignored">
       <max_step_size>0.001</max_step_size>

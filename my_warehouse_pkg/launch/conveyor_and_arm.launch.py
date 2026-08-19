@@ -107,7 +107,10 @@ def generate_launch_description():
     camera_bridge = Node(
         package='ros_gz_bridge', executable='parameter_bridge',
         arguments=['/camera/image_raw@sensor_msgs/msg/Image[gz.msgs.Image',
-                    '/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock']
+                    '/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock',
+                    '/vacuum_gripper/attach@std_msgs/msg/Empty]gz.msgs.Empty',
+                    '/vacuum_gripper/detach@std_msgs/msg/Empty]gz.msgs.Empty'
+                    ]
     )
 
     return LaunchDescription([

@@ -165,4 +165,16 @@
     </sensor>
   </gazebo>
 
+  <!-- 가제보 흡착 플러그인 -->
+  <gazebo>
+    <plugin filename="gz-sim-detachable-joint-system" name="gz::sim::systems::DetachableJoint">
+      <parent_link>fixed_arm_wrist_3_link</parent_link>
+      
+      <child_model>test_box_on_amr</child_model> <child_link>link</child_link> <attach_topic>/vacuum_gripper/attach</attach_topic>
+      <detach_topic>/vacuum_gripper/detach</detach_topic>
+      
+      <suppress_child_warning>true</suppress_child_warning>
+    </plugin>
+  </gazebo>
+
 </robot>
