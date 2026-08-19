@@ -8,6 +8,7 @@ from std_msgs.msg import Empty  # 💡 수정: Bool 대신 Empty 메시지 임�
 from cv_bridge import CvBridge
 import cv2
 import numpy as np
+import subprocess
 
 class VisionPickNode(Node):
     def __init__(self):
@@ -40,21 +41,41 @@ class VisionPickNode(Node):
         self.pose_look = [0.0, -1.3464, 1.3090, -1.5708, -1.5708, -1.5708]
         
         # 2) 접근 자세: 박스 위 10cm 대기 (몸통 0.0, 손목 -1.5708 일치)
-        # self.pose_approach = [0.0, -1.30, 1.40, -1.67, -1.5708, -1.5708] 
         self.pose_approach = [-0.251327, -1.110781, 1.309000, -1.822127, -1.57080008, -1.822127] 
         
         # 3) 피킹 자세: 박스 표면 밀착 (몸통 0.0, 손목 -1.5708 일치)
-        # self.pose_pick = [0.0, -1.45, 1.65, -1.70, -1.5708, -1.5708]    
         self.pose_pick = [-0.251327, -0.639542, 1.309000, -2.199119, -1.570800, -1.780240]    
         
         # 4) 상차 자세: 물건을 들고 위로 복귀
-        # self.pose_lift = [0.0, -1.20, 1.20, -1.5708, -1.5708, -1.5708]
         self.pose_lift = [-0.251327, -1.110781, 1.309000, -1.822127, -1.57080008, -1.822127] 
         
         self.timer = self.create_timer(1.0, self.init_pose)
         self.get_logger().info("🚀 시각 인지 및 픽앤플레이스 노드 시작!")
 
+        self.get_logger().info("🏭 컨베이어 벨트 가동 시작!")
+        self.start_conveyor()
+
+    def start_conveyor(self):
+        # subprocess.Popen을 사용하면 '&' 없이도 깔끔하게 백그라운드에서 실행됩니다.
+        cmd = 'gz topic -t "/model/belt_surface/link/base/track_cmd_vel" -m gz.msgs.Double -p "data: 0.5"'
+        subprocess.Popen(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        # (stdout, stderr를 DEVNULL로 빼주면 터미널에 가제보 명령어 로그가 지저분하게 뜨는 것을 막아줍니다)
+
+    def stop_conveyor(self):
+        cmd = 'gz topic -t "/model/belt_surface/link/base/track_cmd_vel" -m gz.msgs.Double -p "data: 0.0"'
+        subprocess.Popen(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
     def init_pose(self):
+
+        self.get_logger().info("🔓 엉켜있는 초기 조인트 강제 해제 (Detach)!")
+        
+        # 1. ROS 2 토픽으로 Detach 신호 전송
+        msg = Empty()
+        self.detach_pub.publish(msg)
+
+        cmd = 'gz topic -t "/vacuum_gripper/detach" -m gz.msgs.Empty -p ""'
+        subprocess.Popen(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
         self.move_to_pose(self.pose_look, time_sec=2.0)
         self.timer.cancel()
 
@@ -97,6 +118,8 @@ class VisionPickNode(Node):
                     
                     if abs(offset_x) < 50 and abs(offset_y) < 50:
                         self.get_logger().info("🎯 스토퍼 도달! 픽업을 시작합니다.")
+
+                        self.stop_conveyor()
                         self.execute_pick_sequence()
 
         cv2.imshow("Cardboard Box Tracking", frame)
@@ -112,8 +135,8 @@ class VisionPickNode(Node):
         self.get_logger().info("2. 하강하여 상자 위(Hovering) 대기!")
         self.move_to_pose(self.pose_pick, time_sec=1.5)
         
-        # 로봇 팔이 다 내려갈 때까지(1.5초) 기다렸다가 Attach 신호 전송
-        self.create_timer(3.0, self._attach_box)
+        # 로봇 팔이 다 내려갈 때까지(5.0초) 기다렸다가 Attach 신호 전송
+        self.create_timer(5.0, self._attach_box)
 
     def _attach_box(self):
         self.get_logger().info("🧲 가제보 접착(Attach) 신호 전송!")
@@ -132,7 +155,9 @@ class VisionPickNode(Node):
     def _reset_state(self):
         self.state = 'LOOK'
         self.get_logger().info("✨ 작업 완료. 다음 상자 대기 중...")
-        
+
+        self.start_conveyor()
+
         # (원한다면 여기서 self.detach_pub.publish(Empty()) 를 쏴서 상자를 툭 떨어뜨릴 수도 있습니다!)
 
 def main(args=None):
