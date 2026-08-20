@@ -41,6 +41,7 @@ setup(
             'conveyor_control = my_warehouse_pkg.conveyor_control_node:main',
             'box_detector = my_warehouse_pkg.box_detector:main',
             'vision_pick_node = my_warehouse_pkg.vision_pick_node:main',
+            'vision_pick_node_copy = my_warehouse_pkg.vision_pick_node_copy:main',
         ],
     },
 )

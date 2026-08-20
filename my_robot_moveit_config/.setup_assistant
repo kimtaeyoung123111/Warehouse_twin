@@ -1,0 +1,25 @@
+moveit_setup_assistant_config:
+  urdf:
+    package: my_warehouse_pkg
+    relative_path: models/fixed_ur5e_vacuum.urdf.xacro
+  srdf:
+    relative_path: config/fixed_arm_robot.srdf
+  package_settings:
+    author_name: KIM
+    author_email: rlaxodd2@naver.com
+    generated_timestamp: 1787137862
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity
+  modified_urdf:
+    xacros:
+      - control_xacro
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity
