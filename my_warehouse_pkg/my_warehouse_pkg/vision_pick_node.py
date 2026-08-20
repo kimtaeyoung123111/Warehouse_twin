@@ -114,7 +114,7 @@ class VisionMoveItPickNode(Node):
 
     # 💡 컨베이어 토픽명 사용자 지정값 100% 반영
     def start_conveyor(self):
-        cmd = 'gz topic -t "/model/belt_surface/link/base/track_cmd_vel" -m gz.msgs.Double -p "data: 0.2"'
+        cmd = 'gz topic -t "/model/belt_surface/link/base/track_cmd_vel" -m gz.msgs.Double -p "data: 0.5"'
         subprocess.Popen(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
     def stop_conveyor(self):
@@ -223,17 +223,28 @@ class VisionMoveItPickNode(Node):
 
                     if 50 < offset_x_px < 100 and abs(offset_y_px) < 50:
                         scale_factor = 0.0008  
-                        delta_x = offset_y_px * scale_factor
-                        delta_y = -offset_x_px * scale_factor
+                        
+                        # 💡 1. 기본 픽셀 변환값 계산
+                        raw_delta_x = offset_y_px * scale_factor
+                        raw_delta_y = -offset_x_px * scale_factor
 
-                        self.target_x = self.base_pick_x + delta_x
-                        self.target_y = self.base_pick_y + delta_y
+                        # 💡 2. [영점 수동 보정 오프셋] (단위: 미터 m)
+                        # 로봇이 상자보다 앞/뒤로 빗나가면 offset_x 조절 (예: 0.03 = 3cm 앞)
+                        # 로봇이 상자보다 좌/우로 빗나가면 offset_y 조절 (예: -0.05 = 5cm 오른쪽)
+                        manual_offset_x = 0.3   # 👈 테스트하며 조율 (예: 0.02, -0.03 등)
+                        manual_offset_y = 0.00   # 👈 테스트하며 조율 (예: 0.05, -0.04 등)
 
-                        self.get_logger().info(f"🎯 상자 중앙 도달 직전! 관성을 고려해 미리 정지합니다.")
+                        # 💡 3. 최종 목표 좌표 계산
+                        self.target_x = self.base_pick_x + raw_delta_x + manual_offset_x
+                        self.target_y = self.base_pick_y + raw_delta_y + manual_offset_y
+
+                        self.get_logger().info(
+                            f"🎯 상자 중앙 포착! 보정된 목표 3D 좌표: X={self.target_x:.3f}, Y={self.target_y:.3f}"
+                        )
                         self.state = 'EXECUTING'
                         self.stop_conveyor()
 
-                        # 상자가 관성에 의해 미끄러져서 완벽한 중앙에 멈출 때까지 0.5초 대기
+                        # 상자가 완전히 멈추도록 0.5초 대기 후 _start_pick 실행
                         self.seq_timer = self.create_timer(0.5, self._start_pick)
 
         cv2.imshow("Cardboard Box Tracking", frame)
@@ -255,14 +266,14 @@ class VisionMoveItPickNode(Node):
         else:
             self.get_logger().warn("⚠️ TF를 못 찾았습니다! 카메라(비전) 기반 계산 좌표를 사용합니다.")
             # 카메라가 계산한 target_x, target_y는 유지하고 높이만 지정
-            self.target_z = 0.95 
+            self.target_z = 0.9 
             
         # 💡 [핵심 버그 수정] 인자 없이 깔끔하게 호출합니다!
         self.execute_moveit_pick_sequence()
 
     def execute_moveit_pick_sequence(self):
         # 1단계: 상자(Z) 기준 정확히 0.2m(20cm) 위 상공으로 안전 접근
-        approach_z = self.target_z + 0.05
+        approach_z = self.target_z + 0.1
         self.get_logger().info(f"1️⃣ MoveIt 2: 동적 상공 0.2m 접근 (Approach Z={approach_z:.3f}m)")
         self.move_to_pose(self.target_x, self.target_y, approach_z)
         self.seq_timer = self.create_timer(5.0, self._step_descend)
@@ -288,7 +299,7 @@ class VisionMoveItPickNode(Node):
         self.seq_timer.cancel()  
         
         # 4단계: 집고 난 뒤 다시 상공 0.2m 높이로 수직 상승
-        lift_z = self.target_z + 0.05
+        lift_z = self.target_z + 0.2
         self.get_logger().info(f"3️⃣ MoveIt 2: 상자 0.2m 수직 상승 (Lift Z={lift_z:.3f}m)")
         self.move_to_pose(self.target_x, self.target_y, lift_z)
         self.seq_timer = self.create_timer(3.0, self._reset_state)
