@@ -12,11 +12,23 @@ def generate_launch_description():
     ros_gz_sim_share = get_package_share_directory('ros_gz_sim')
 
     models_path = os.path.join(pkg_share, 'models')
+
+    # MiR100 3D 파일 경로도 가제보에게 미리 알려주기!
+    mir_desc_dir = get_package_share_directory('mir_description')
+    mir_share_parent = os.path.dirname(mir_desc_dir) # install/.../share 폴더
+
+    combined_paths = f"{models_path}:{mir_share_parent}"
+
     if 'GZ_SIM_RESOURCE_PATH' in os.environ:
-        if models_path not in os.environ['GZ_SIM_RESOURCE_PATH']:
-            os.environ['GZ_SIM_RESOURCE_PATH'] += f":{models_path}"
+        os.environ['GZ_SIM_RESOURCE_PATH'] += f":{combined_paths}"
     else:
-        os.environ['GZ_SIM_RESOURCE_PATH'] = models_path
+        os.environ['GZ_SIM_RESOURCE_PATH'] = combined_paths
+        
+    # if 'GZ_SIM_RESOURCE_PATH' in os.environ:
+    #     if models_path not in os.environ['GZ_SIM_RESOURCE_PATH']:
+    #         os.environ['GZ_SIM_RESOURCE_PATH'] += f":{models_path}"
+    # else:
+    #     os.environ['GZ_SIM_RESOURCE_PATH'] = models_path
 
     # 1. Gazebo 실행 (Empty World + 자동 재생 -r 옵션)
     world_file = os.path.join(pkg_share, 'worlds', 'jetty.sdf')
